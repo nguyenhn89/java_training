@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.example.java_training.dto.ListElementProductDTO;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -15,6 +16,14 @@ import java.math.BigDecimal;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+
+@SqlResultSetMapping(name = "ProductList", classes = {
+        @ConstructorResult(targetClass = ListElementProductDTO.class, columns = {
+                @ColumnResult(name = "id", type = Long.class),
+                @ColumnResult(name = "name", type = String.class),
+                @ColumnResult(name = "price", type = Long.class),
+        })
+})
 public class Product extends  AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 2322864574973757981L;
