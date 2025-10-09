@@ -1,4 +1,4 @@
-package org.example.java_training.config.datasource;
+package org.example.java_training.config;
 
 import jakarta.persistence.EntityManagerFactory;
 import org.springframework.context.annotation.Bean;
@@ -9,8 +9,11 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories(basePackages = "org.example.java_training.repository")
-public class mainDataSourceConfiguration {
+@EnableJpaRepositories(
+        basePackages = "org.example.java_training.repository",
+        transactionManagerRef = "mainTransactionManager"
+)
+public class MainDataSourceConfiguration {
 
     @Bean(name = "mainTransactionManager")
     public JpaTransactionManager transactionManager(EntityManagerFactory entityManager) {

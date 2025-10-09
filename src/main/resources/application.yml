@@ -4,9 +4,18 @@ spring:
 
   datasource:
     url: jdbc:mysql://localhost:3306/java_training?useSSL=false&serverTimezone=UTC
+    slaveUrl: jdbc:mysql://localhost:3306/java_training?useSSL=false&serverTimezone=UTC
     username: root
     password:
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    driverClassName: com.mysql.cj.jdbc.Driver
+    connectionTimeOut: 20000
+    minIdle: 20
+    maxPoolSize: 100
+    idleTimeout: 10000
+    poolName: connection-pool
+    autoCommit: false
+    maxLifetime: 72000
+    leakDetectionThreshold: 64800
 
   jpa:
     hibernate:

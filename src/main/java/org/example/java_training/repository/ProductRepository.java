@@ -1,0 +1,6 @@
+package org.example.java_training.repository;
+import org.example.java_training.domain.Product;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ProductRepository extends JpaRepository<Product, Long>, ProductRepositoryCustom{
+}
