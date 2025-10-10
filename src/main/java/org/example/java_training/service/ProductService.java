@@ -110,4 +110,21 @@ public class ProductService {
         return new PageImpl<>(dtoList, pageable, productPage.getTotalElements());
     }
 
+    public Page<ListProductWithCategoryDTO> searchManual(String name, Long categoryId,
+                                                   BigDecimal minPrice, BigDecimal maxPrice,
+                                                   Pageable pageable) {
+        Page<Map<String, Object>> result = productRepository.searchManual(name, categoryId, minPrice, maxPrice, pageable);
+
+        List<ListProductWithCategoryDTO> dtoList = result.getContent().stream()
+                .map(row -> new ListProductWithCategoryDTO(
+                        ((Number) row.get("id")).longValue(),
+                        (String) row.get("name"),
+                        new BigDecimal(row.get("price").toString()),
+                        (String) row.get("categoryName")
+                ))
+                .toList();
+
+        return new PageImpl<>(dtoList, pageable, result.getTotalElements());
+    }
+
 }

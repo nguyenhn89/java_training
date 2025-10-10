@@ -162,6 +162,4 @@ public class ProductRepositoryCustomImpl extends RepositoryCustomUtils implement
         return new PageImpl<>(resultList, pageable, total);
     }
 
-
-
 }
