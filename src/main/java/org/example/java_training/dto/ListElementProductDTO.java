@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 @Data
 @NoArgsConstructor
@@ -15,7 +16,7 @@ public class ListElementProductDTO implements Serializable {
 
     @Schema(description = "The id of Product", example = "100005276")
     @JsonProperty("id")
-    private Long Id;
+    private Long id;
 
     @Schema(description = "The name of Product", example = "product name")
     @JsonProperty("name")
@@ -23,6 +24,6 @@ public class ListElementProductDTO implements Serializable {
 
     @Schema(description = "price of Product", example = "1000")
     @JsonProperty("price")
-    private Long price;
+    private BigDecimal price;
 
 }

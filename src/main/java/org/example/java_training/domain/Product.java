@@ -10,6 +10,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.example.java_training.dto.ListElementProductDTO;
+import org.example.java_training.dto.ListProductWithCategoryDTO;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 
@@ -23,16 +25,16 @@ import java.math.BigDecimal;
         @ConstructorResult(targetClass = ListElementProductDTO.class, columns = {
                 @ColumnResult(name = "id", type = Long.class),
                 @ColumnResult(name = "name", type = String.class),
-                @ColumnResult(name = "price", type = Long.class),
+                @ColumnResult(name = "price", type = BigDecimal.class),
         })
 })
 
 @SqlResultSetMapping(name = "ProductWithCategoryIdList", classes = {
-        @ConstructorResult(targetClass = ListElementProductDTO.class, columns = {
+        @ConstructorResult(targetClass = ListProductWithCategoryDTO.class, columns = {
                 @ColumnResult(name = "id", type = Long.class),
                 @ColumnResult(name = "product_name", type = String.class),
-                @ColumnResult(name = "price", type = Long.class),
-                @ColumnResult(name = "category_name", type = Long.class),
+                @ColumnResult(name = "price", type = BigDecimal.class),
+                @ColumnResult(name = "category_name", type = String.class),
         })
 })
 public class Product extends  AbstractAuditingEntity implements Serializable {
@@ -55,7 +57,7 @@ public class Product extends  AbstractAuditingEntity implements Serializable {
 
     @NotNull(message = "Danh mục sản phẩm là bắt buộc")
     @Column(name = "category_id")
-    private Integer categoryId;
+    private Long categoryId;
 
     @Column(name = "content")
     private String content;

@@ -66,7 +66,7 @@ public class DataSeeder {
                     Product product = new Product();
                     product.setName(faker.commerce().productName());
                     product.setPrice(BigDecimal.valueOf(Double.parseDouble(faker.commerce().price())));
-                    product.setCategoryId(Math.toIntExact(categories.get(random.nextInt(categories.size())).getId()));
+                    product.setCategoryId((long) Math.toIntExact(categories.get(random.nextInt(categories.size())).getId()));
                     product.setContent(faker.lorem().sentence());
                     product.setMemo(faker.lorem().word());
                     productRepo.save(product);
