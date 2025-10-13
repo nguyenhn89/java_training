@@ -127,4 +127,8 @@ public class ProductService {
         return new PageImpl<>(dtoList, pageable, result.getTotalElements());
     }
 
+    public void deleteProduct(Long id) {
+        productRepository.deleteById(id);
+    }
+
 }

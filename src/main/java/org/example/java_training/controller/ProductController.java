@@ -11,6 +11,7 @@ import org.example.java_training.responses.ProductListResponse;
 import org.example.java_training.responses.ProductWithCategoryIdListResponse;
 import org.example.java_training.service.ProductService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.example.java_training.exceptions.NotFoundException;
@@ -62,6 +63,7 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/product_with_category/{categoryId}", method = RequestMethod.GET)
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> getProductWithCagtegoryId(@PathVariable Long categoryId) {
         try {
             List<ListProductWithCategoryDTO> productWithCagtegoryIdList = productService.getProductWithCagtegoryId(categoryId);
@@ -80,12 +82,12 @@ public class ProductController {
         return dto != null ? ResponseEntity.ok(dto) : ResponseEntity.notFound().build();
     }
 
-//    // DELETE post
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
-//        categoryService.deleteCategory(id);
-//        return ResponseEntity.ok("Delete success");
-//    }
+    // DELETE product
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
+        productService.deleteProduct(id);
+        return ResponseEntity.ok("Delete success");
+    }
 
 
     //http://localhost:8081/api/products/advanced-search?name=product 1 update&minPrice=10&maxPrice=500&categoryId=1&page=0&size=5&sort=price,asc
