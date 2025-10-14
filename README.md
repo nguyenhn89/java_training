@@ -1,36 +1,28 @@
-🧩 Java Training Project
-📘 Giới thiệu
+Java Training Project
++ Giới thiệu
 
 Dự án mẫu Spring Boot được xây dựng nhằm mục đích học tập và thực hành các kỹ thuật backend Java, bao gồm:
 
-🧠 Spring Web — REST Controller & MVC
+- Khởi tạo project Spring Boot base Gradle
 
-🗄️ Spring Data JPA — kết nối với MySQL
+- Xây dựng module Products CRUD
 
-🔐 Spring Security + JWT — xác thực & phân quyền
+- Tích hợp JWT Authentication and Authorization
 
-⚙️ Custom Repository — xử lý giao dịch thủ công (manual transaction)
+- Sử dụng Spring Data JPA / Hibernate
+
+- Có custom repository và transaction management
 
 ⚙️ Yêu cầu môi trường
 Thành phần	Phiên bản khuyến nghị
-☕ Java	17 (JDK 17)
-🧱 Gradle	8.x
-🐬 MySQL	8.x
-💻 IDE	IntelliJ IDEA / Eclipse / VSCode
-🚀 Spring Boot	3.x
-🧠 Các chức năng chính
++ Java	17 (JDK 17)
++ Gradle	8.x
++ MySQL	8.x
++ IDE	IntelliJ IDEA / Eclipse / VSCode
++ Spring Boot	3.x
++ Các chức năng chính
 
-✅ Khởi tạo project Spring Boot base Gradle
-
-🧩 Xây dựng module Products CRUD
-
-🔑 Tích hợp JWT Authentication
-
-💾 Sử dụng Spring Data JPA / Hibernate
-
-🧠 Có custom repository và transaction management
-
-🚀 Hướng dẫn chạy API với Postman
+- Hướng dẫn chạy API với Postman
 
 Base URL:
 🟢 https://java-training.onrender.com
@@ -99,3 +91,11 @@ DELETE /api/products/15
 Headers:
 
 Authorization: Bearer <JWT_TOKEN>
+
+- Hướng dẫn kết nối navicat vào server PostgreSQL:
+  host: dpg-d3mvr4m3jp1c73d4g7i0-a.oregon-postgres.render.com
+  Initial Database: java_training
+  user: root
+  password: KlePxNt8ZxxGoyFseMgMDG3rhO3MXHeB
+  port: 5432
+  
