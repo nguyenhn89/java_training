@@ -37,6 +37,9 @@ dependencies {
     // MySQL connector
     implementation 'com.mysql:mysql-connector-j:8.4.0'
 
+    //PostgreSQL
+    implementation 'org.postgresql:postgresql:42.7.2'
+
     // Tomcat Jasper (JSP support)
     implementation 'org.apache.tomcat.embed:tomcat-embed-jasper:10.1.39'
 
