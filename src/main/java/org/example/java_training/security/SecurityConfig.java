@@ -1,6 +1,7 @@
 package org.example.java_training.security;
 
 import org.example.java_training.service.impl.CustomUserDetailsService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,7 +14,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-//import com.dev.mvc_spring.security.JwtAuthEntryPoint;
 
 
 @Configuration
@@ -22,17 +22,15 @@ public class SecurityConfig {
 
 	private final CustomUserDetailsService userDetailsService;
     private final JwtUtil jwtUtil;
-    private final JwtAuthEntryPoint jwtAuthEntryPoint;
-    private final CustomAccessDeniedHandler accessDeniedHandler;
+
+    @Autowired
+    private CustomAuthHandler customAuthHandler;
 
     public SecurityConfig(CustomUserDetailsService userDetailsService,
-                          JwtUtil jwtUtil,
-                          JwtAuthEntryPoint jwtAuthEntryPoint,
-                          CustomAccessDeniedHandler accessDeniedHandler) {
+                          JwtUtil jwtUtil
+    ) {
         this.userDetailsService = userDetailsService;
         this.jwtUtil = jwtUtil;
-        this.jwtAuthEntryPoint = jwtAuthEntryPoint;
-        this.accessDeniedHandler = accessDeniedHandler;
     }
 
     @Bean
@@ -41,8 +39,8 @@ public class SecurityConfig {
         http
         .csrf(AbstractHttpConfigurer::disable) // Tắt CSRF vì dùng JWT
         .exceptionHandling(ex -> ex
-                .authenticationEntryPoint(jwtAuthEntryPoint) //custom log lỗi 401 không có token
-                .accessDeniedHandler(accessDeniedHandler)     // ✅ lỗi 403
+                    .authenticationEntryPoint(customAuthHandler) // Xử lý lỗi 401
+                    .accessDeniedHandler(customAuthHandler)      // Xử lý lỗi 403
         )
 
 
