@@ -3,24 +3,27 @@ spring:
     name: java_training
 
   datasource:
-    url: jdbc:mysql://localhost:3306/java_training?useSSL=false&serverTimezone=UTC
-    slaveUrl: jdbc:mysql://localhost:3306/java_training?useSSL=false&serverTimezone=UTC
-    username: root
-    password:
-    driverClassName: com.mysql.cj.jdbc.Driver
-    connectionTimeOut: 20000
-    minIdle: 20
-    maxPoolSize: 100
-    idleTimeout: 10000
-    poolName: connection-pool
-    autoCommit: false
-    maxLifetime: 72000
-    leakDetectionThreshold: 64800
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/java_training?useSSL=false&serverTimezone=UTC}
+    username: ${SPRING_DATASOURCE_USERNAME:root}
+    password: ${SPRING_DATASOURCE_PASSWORD:}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      connection-timeout: 20000
+      minimum-idle: 20
+      maximum-pool-size: 100
+      idle-timeout: 10000
+      pool-name: connection-pool
+      auto-commit: false
+      max-lifetime: 72000
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:update}
     show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQLDialect
 
   batch:
     job:
@@ -31,13 +34,9 @@ spring:
     suffix: .html
     cache: false
 
-  mvc:
-    view:
-      prefix: /
-
 server:
-  port: 8081
+  port: ${PORT:8081}
 
 jwt:
-  secret: a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6
+  secret: ${JWT_SECRET:a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6}
   expiration: 3600000
