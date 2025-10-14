@@ -47,7 +47,7 @@ public class SecurityConfig {
         .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/auth/**").permitAll()         // Đăng nhập, đăng ký → cho phép
 //                .requestMatchers("/api/products/**").authenticated()    // CRUD post → cần xác thực
-                .requestMatchers("/api/products/**").hasRole("ADMIN")
+                .requestMatchers("/api/products/**").hasRole("USER")
                 .requestMatchers("/admin/**").hasRole("ADMIN") // chỉ ADMIN được vào
                 .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN") // USER và ADMIN đều được
                 .anyRequest().permitAll()                            // Các route còn lại → cho phép

@@ -63,7 +63,7 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/product_with_category/{categoryId}", method = RequestMethod.GET)
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> getProductWithCagtegoryId(@PathVariable Long categoryId) {
         try {
             List<ListProductWithCategoryDTO> productWithCagtegoryIdList = productService.getProductWithCagtegoryId(categoryId);
