@@ -93,9 +93,9 @@ Headers:
 Authorization: Bearer <JWT_TOKEN>
 
 - Hướng dẫn kết nối navicat vào server PostgreSQL:
-  host: dpg-d3mvr4m3jp1c73d4g7i0-a.oregon-postgres.render.com
-  Initial Database: java_training
-  user: root
-  password: KlePxNt8ZxxGoyFseMgMDG3rhO3MXHeB
-  port: 5432
++  host: dpg-d3mvr4m3jp1c73d4g7i0-a.oregon-postgres.render.com
++  Initial Database: java_training
++  user: root
++  password: KlePxNt8ZxxGoyFseMgMDG3rhO3MXHeB
++  port: 5432
   
