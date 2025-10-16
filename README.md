@@ -92,10 +92,10 @@ Headers:
 
 Authorization: Bearer <JWT_TOKEN>
 
-Tạo sản phẩm
+7️⃣ Tạo sản phẩm
 
-Post /api/products
-Body (JSON ví dụ):
+Post /api/products 
+Body (JSON ví dụ): 
 
 {
 "name": "product1",
@@ -103,9 +103,9 @@ Body (JSON ví dụ):
 "categoryId": 32,
 "content" : "macbook m1",
 "memo": "123"
-}
-Authorization: Bearer <JWT_TOKEN>
-Content-Type: application/json
+} 
+Authorization: Bearer <JWT_TOKEN> 
+Content-Type: application/json 
 
 - Hướng dẫn kết nối navicat vào server PostgreSQL:
 +  host: dpg-d3mvr4m3jp1c73d4g7i0-a.oregon-postgres.render.com

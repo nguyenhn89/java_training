@@ -5,6 +5,8 @@ package org.example.java_training.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.example.java_training.domain.Product;
+import org.example.java_training.domain.ProductDocument;
 import org.example.java_training.dto.ListElementProductDTO;
 import org.example.java_training.dto.ListProductWithCategoryDTO;
 import org.example.java_training.responses.ProductListResponse;
@@ -24,6 +26,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -61,6 +64,7 @@ public class ProductController {
         }
 
     }
+
 
     @RequestMapping(value = "/product_with_category/{categoryId}", method = RequestMethod.GET)
     @PreAuthorize("hasRole('USER')")
@@ -129,5 +133,33 @@ public class ProductController {
         Page<ListProductWithCategoryDTO> productSearch = productService.searchManual(name, categoryId, minPrice, maxPrice, pageable);
         return ResponseEntity.ok(productSearch);
     }
+
+    //electicsearch
+    @GetMapping("/elasticsearch")
+    public List<ProductDocument> elasticSearch(@RequestParam String q) throws IOException {
+        return productService.searchAllFields(q);
+    }
+//
+    @GetMapping("/reindex")
+    public ResponseEntity<String> reindex() throws Exception {
+        String message = productService.reindexAllProducts();
+        return ResponseEntity.ok(message);
+    }
+
+    @GetMapping("/elastic/{id}")
+    public ResponseEntity<ProductDocument> getProduct(@PathVariable String id) {
+        try {
+            ProductDocument product = productService.findById(id);
+            if (product != null) {
+                return ResponseEntity.ok(product);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(500).build();
+        }
+    }
+
+
 
 }

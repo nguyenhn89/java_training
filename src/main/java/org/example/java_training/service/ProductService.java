@@ -1,22 +1,32 @@
 package org.example.java_training.service;
 
 
+import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.elasticsearch.core.GetResponse;
+import co.elastic.clients.elasticsearch.core.SearchRequest;
+import co.elastic.clients.elasticsearch.core.SearchResponse;
+import co.elastic.clients.elasticsearch.core.search.Hit;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.java_training.builder.GenericBuilder;
 import org.example.java_training.domain.Category;
 import org.example.java_training.domain.Product;
+import org.example.java_training.domain.ProductDocument;
 import org.example.java_training.dto.ListElementProductDTO;
 import org.example.java_training.dto.ListProductWithCategoryDTO;
 import org.example.java_training.repository.CategoryRepository;
 import org.example.java_training.repository.ProductRepository;
+//import org.example.java_training.responses.ProductSearchRepository;
 import org.example.java_training.specification.ProductSpecification;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.example.java_training.request.ProductCreateRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -31,6 +41,10 @@ public class ProductService {
     private final ProductRepository productRepository;
 
     private final CategoryRepository categoryRepository;
+
+//    private final ProductSearchRepository productSearchRepository;
+
+    private final ElasticsearchClient client;
 
     public List<ListElementProductDTO> getListProduct() {
 
@@ -130,5 +144,65 @@ public class ProductService {
     public void deleteProduct(Long id) {
         productRepository.deleteById(id);
     }
+
+
+    @Scheduled(fixedRate = 3 * 60 * 1000) // 3 phút = 180.000ms
+    public String reindexAllProducts() throws Exception {
+        List<Product> products = productRepository.findAll();
+
+        int successCount = 0;
+
+        for (Product p : products) {
+            ProductDocument doc = new ProductDocument(
+                    p.getId(),
+                    p.getName(),
+                    p.getPrice(),
+                    p.getCategoryId(),
+                    p.getContent(),
+                    p.getMemo()
+            );
+
+            client.index(i -> i
+                    .index("products")      // tên index
+                    .id(doc.getId().toString()) // id document
+                    .document(doc)
+            );
+            successCount++;
+        }
+
+        return "✅ Reindex success: " + successCount + " products indexed to Elasticsearch.";
+    }
+
+    public ProductDocument findById(String id) throws Exception {
+        GetResponse<ProductDocument> response = client.get(g -> g
+                        .index("products")
+                        .id(id),
+                ProductDocument.class
+        );
+        return response.found() ? response.source() : null;
+    }
+
+    // Search bằng multi_match
+    public List<ProductDocument> searchAllFields(String keyword) throws IOException {
+        SearchResponse<ProductDocument> response = client.search(s -> s
+                        .index("products")
+                        .query(q -> q
+                                .multiMatch(m -> m
+                                        .query(keyword)
+                                        .fields("name", "memo", "content")
+                                )
+                        ),
+                ProductDocument.class
+        );
+
+        // Lấy danh sách hits
+        List<ProductDocument> results = response.hits().hits().stream()
+                .map(Hit::source) // mỗi hit lấy ra document
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+
+        return results;
+    }
+
 
 }
