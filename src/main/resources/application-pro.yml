@@ -1,0 +1,53 @@
+spring:
+  application:
+    name: java_training
+
+  datasource:
+    #    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/java_training?useSSL=false&serverTimezone=UTC}
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://dpg-d3mvr4m3jp1c73d4g7i0-a.oregon-postgres.render.com:5432/java_training}
+    username: ${SPRING_DATASOURCE_USERNAME:root}
+    password: ${SPRING_DATASOURCE_PASSWORD:}
+    #    driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      connection-timeout: 20000
+      minimum-idle: 20
+      maximum-pool-size: 100
+      idle-timeout: 10000
+      pool-name: connection-pool
+      auto-commit: false
+      max-lifetime: 72000
+  data:
+    elasticsearch:
+      client:
+        elasticsearch-rest:
+          uris: https://java-training-e96952.es.us-central1.gcp.elastic.cloud:443
+          api-key: aE12dTZwa0JscnVINTlFWFVkd3c6RTZsQ29Dc2hEVkYxMG9fc3BqODVHQQ==
+          connection-timeout: 10s
+          socket-timeout: 10s
+
+  jpa:
+    hibernate:
+      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:update}
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        #        dialect: org.hibernate.dialect.MySQLDialect
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  batch:
+    job:
+      enabled: false
+
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    cache: false
+
+server:
+  port: ${PORT:8081}
+
+jwt:
+  secret: ${JWT_SECRET:a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6}
+  expiration: 3600000
