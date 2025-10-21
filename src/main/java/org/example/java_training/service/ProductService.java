@@ -6,12 +6,15 @@ import co.elastic.clients.elasticsearch.core.GetResponse;
 import co.elastic.clients.elasticsearch.core.SearchRequest;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.elasticsearch.core.search.Hit;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.java_training.builder.GenericBuilder;
 import org.example.java_training.domain.Category;
 import org.example.java_training.domain.Product;
 import org.example.java_training.domain.ProductDocument;
+import org.example.java_training.dto.CategoryCountDTO;
 import org.example.java_training.dto.ListElementProductDTO;
 import org.example.java_training.dto.ListProductWithCategoryDTO;
 import org.example.java_training.repository.CategoryRepository;
@@ -81,6 +84,14 @@ public class ProductService {
         //search use Criteria API
     public Page<ListProductWithCategoryDTO> searchProductsCriteriaApi(String name, Long categoryId, Double minPrice, Double maxPrice, Pageable pageable) {
         return productRepository.searchProductsCriteriaApi(name, categoryId, minPrice, maxPrice, pageable);
+    }
+
+    public List<CategoryCountDTO> countProductsByCategory() {
+        return productRepository.countProductsByCategory();
+    }
+
+    public List<Product> findExpensiveProducts() {
+        return productRepository.findExpensiveProducts();
     }
 
     //search use JpaSpecificationExecutor

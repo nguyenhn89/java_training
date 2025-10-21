@@ -3,6 +3,7 @@ package org.example.java_training.repository.impl;
 import jakarta.persistence.*;
 import org.example.java_training.domain.Category;
 import org.example.java_training.domain.Product;
+import org.example.java_training.dto.CategoryCountDTO;
 import org.example.java_training.dto.ListElementProductDTO;
 import org.example.java_training.dto.ListProductWithCategoryDTO;
 import org.example.java_training.repository.ProductRepositoryCustom;
@@ -161,5 +162,40 @@ public class ProductRepositoryCustomImpl extends RepositoryCustomUtils implement
 
         return new PageImpl<>(resultList, pageable, total);
     }
+
+    public List<CategoryCountDTO> countProductsByCategory() {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Object[]> cq = cb.createQuery(Object[].class);
+        Root<Product> product = cq.from(Product.class);
+
+        cq.multiselect(product.get("categoryId"), cb.count(product));
+        cq.groupBy(product.get("categoryId"));
+
+        List<Object[]> results = entityManager.createQuery(cq).getResultList();
+
+        return results.stream()
+                .map(r -> new CategoryCountDTO(
+                        ((Number) r[0]).longValue(),
+                        ((Number) r[1]).longValue()
+                ))
+                .toList();
+    }
+
+    //Tìm sản phẩm có giá cao hơn giá trung bình toàn bộ sản phẩm.
+    public List<Product> findExpensiveProducts() {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Product> cq = cb.createQuery(Product.class);
+        Root<Product> product = cq.from(Product.class);
+
+        // Subquery: tính giá trung bình
+        Subquery<Double> subquery = cq.subquery(Double.class);
+        Root<Product> subRoot = subquery.from(Product.class);
+        subquery.select(cb.avg(subRoot.get("price")));
+
+        cq.select(product).where(cb.gt(product.get("price"), subquery));
+
+        return entityManager.createQuery(cq).getResultList();
+    }
+
 
 }
