@@ -139,7 +139,13 @@ public class ProductController {
     public List<ProductDocument> elasticSearch(@RequestParam String q) throws IOException {
         return productService.searchAllFields(q);
     }
-//
+
+    @GetMapping("/elasticsearch_suggest")
+    public List<String> suggestProductNames(String prefix) throws IOException
+    {
+        return productService.suggestProductNames(prefix);
+    }
+    //
     @GetMapping("/reindex")
     public ResponseEntity<String> reindex() throws Exception {
         String message = productService.reindexAllProducts();

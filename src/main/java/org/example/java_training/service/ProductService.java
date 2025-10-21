@@ -189,7 +189,8 @@ public class ProductService {
                         .query(q -> q
                                 .multiMatch(m -> m
                                         .query(keyword)
-                                        .fields("name", "memo", "content")
+                                        .fields("name^2", "memo", "content") // name ưu tiên hơn
+                                        .fuzziness("AUTO") // Cho phép sai chính tả nhẹ
                                 )
                         ),
                 ProductDocument.class
@@ -202,6 +203,26 @@ public class ProductService {
                 .collect(Collectors.toList());
 
         return results;
+    }
+
+    //Gợi ý tìm kiếm (Prefix search)
+    public List<String> suggestProductNames(String prefix) throws IOException {
+        SearchResponse<ProductDocument> response = client.search(s -> s
+                        .index("products")
+                        .query(q -> q
+                                .prefix(p -> p
+                                        .field("name.keyword")
+                                        .value(prefix.toLowerCase())
+                                )
+                        )
+                        .size(5), // chỉ lấy top 5 gợi ý
+                ProductDocument.class
+        );
+
+        return response.hits().hits().stream()
+                .map(hit -> hit.source().getName())
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
     }
 
 
