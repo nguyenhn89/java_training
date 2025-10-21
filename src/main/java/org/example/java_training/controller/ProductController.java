@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.java_training.domain.Product;
 import org.example.java_training.domain.ProductDocument;
+import org.example.java_training.dto.CategoryCountDTO;
 import org.example.java_training.dto.ListElementProductDTO;
 import org.example.java_training.dto.ListProductWithCategoryDTO;
 import org.example.java_training.responses.ProductListResponse;
@@ -164,6 +165,27 @@ public class ProductController {
         } catch (Exception e) {
             return ResponseEntity.status(500).build();
         }
+    }
+
+    @GetMapping("/count-by-category")
+    public ResponseEntity<List<CategoryCountDTO>> countProductsByCategory() {
+        List<CategoryCountDTO> result = productService.countProductsByCategory();
+        return ResponseEntity.ok(result);
+    }
+
+    /**
+     * API: GET /api/products/expensive
+     * Mục đích: Lấy danh sách các sản phẩm có giá cao hơn giá trung bình toàn bộ sản phẩm
+     */
+    @GetMapping("/expensive")
+    public ResponseEntity<List<Product>> getExpensiveProducts() {
+        List<Product> products = productService.findExpensiveProducts();
+
+        if (products.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(products);
     }
 
 

@@ -125,3 +125,9 @@ search use Criteria API
 GET api/products/search_jpa_specification_executor?name=product&minPrice=10&maxPrice=500&categoryId=1&page=0&size=5&sort=price,asc
 Headers:
 Authorization: Bearer <JWT_TOKEN>
+9.
+-Thống kê số lượng sản phẩm theo danh mục
+api/products/count-by-category
+Authorization: Bearer <JWT_TOKEN>
+-Lấy danh sách các sản phẩm có giá cao hơn giá trung bình toàn bộ sản phẩm
+/api/products/expensive
