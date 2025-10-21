@@ -6,15 +6,21 @@ import org.example.java_training.security.JwtUtil;
 import org.example.java_training.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -34,15 +40,47 @@ public class AuthController extends BaseController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody @Valid AuthRequest request) {
+    public ResponseEntity<?> register(
+            @Valid @RequestBody AuthRequest request,
+            BindingResult bindingResult
+    ) {
+        if (bindingResult.hasErrors()) {
+            List<String> errors = bindingResult.getFieldErrors()
+                    .stream()
+                    .map(e -> e.getField() + ": " + e.getDefaultMessage())
+                    .collect(Collectors.toList());
+
+            return ResponseEntity.badRequest().body(Map.of(
+                    "status", "fail",
+                    "errors", errors
+            ));
+        }
+
+        if (userService.existsByUserName(request.getUserName())) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of(
+                    "status", "fail",
+                    "message", "Username already exists"
+            ));
+        }
+
+        // 3️⃣ Tạo user mới
         User user = new User();
         user.setUserName(request.getUserName());
         user.setPassword(request.getPassword());
         user.setRole("ROLE_USER");
-        userService.save(user);
 
-        String token = jwtUtil.generateToken(user.getUserName());
-        return ok(token);
+        try {
+            userService.save(user);
+            return ResponseEntity.ok(Map.of(
+                    "status", "success",
+                    "message", "User registered successfully"
+            ));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of(
+                    "status", "error",
+                    "message", "Error while saving user"
+            ));
+        }
     }
 
     @PostMapping("/login")

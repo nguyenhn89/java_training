@@ -7,7 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService  {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -33,6 +33,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findByUserName(String userName) {
         return userRepository.findByUserName(userName).orElse(null);
+    }
+
+    @Override
+    public boolean existsByUserName(String userName) {
+        return userRepository.existsByUserName(userName);
     }
 }
 

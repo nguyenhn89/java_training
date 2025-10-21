@@ -97,7 +97,7 @@ public class ProductController {
     //http://localhost:8081/api/products/advanced-search?name=product 1 update&minPrice=10&maxPrice=500&categoryId=1&page=0&size=5&sort=price,asc
 
     /* search pagination sort use Criteria API */
-    @RequestMapping(value = "/search", method = RequestMethod.GET)
+    @RequestMapping(value = "/search_criteria_api", method = RequestMethod.GET)
     public ResponseEntity<Page<ListProductWithCategoryDTO>> search(
             @RequestParam(required = false) String name,
             @RequestParam(required = false) Long categoryId,
@@ -105,12 +105,12 @@ public class ProductController {
             @RequestParam(required = false) Double maxPrice,
             @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable
     ) {
-        Page<ListProductWithCategoryDTO> productSearch = productService.searchProducts(name, categoryId, minPrice, maxPrice, pageable);
+        Page<ListProductWithCategoryDTO> productSearch = productService.searchProductsCriteriaApi(name, categoryId, minPrice, maxPrice, pageable);
         return ResponseEntity.ok(productSearch);
     }
 
 
-    @RequestMapping(value = "/advanced-search", method = RequestMethod.GET)
+    @RequestMapping(value = "/search_jpa_specification_executor", method = RequestMethod.GET)
     public ResponseEntity<Page<ListProductWithCategoryDTO>> advancedSearch(
             @RequestParam(required = false) String name,
             @RequestParam(required = false) Long categoryId,
@@ -118,7 +118,7 @@ public class ProductController {
             @RequestParam(required = false) BigDecimal maxPrice,
             @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable
     ) {
-        Page<ListProductWithCategoryDTO> productSearch = productService.search(name, categoryId, minPrice, maxPrice, pageable);
+        Page<ListProductWithCategoryDTO> productSearch = productService.searchProductsSpecificationExecutor(name, categoryId, minPrice, maxPrice, pageable);
         return ResponseEntity.ok(productSearch);
     }
 

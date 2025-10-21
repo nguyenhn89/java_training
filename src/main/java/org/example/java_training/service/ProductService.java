@@ -78,32 +78,28 @@ public class ProductService {
         return null;
     }
 
-    //search use Criteria API
-    public Page<ListProductWithCategoryDTO> searchProducts(String name, Long categoryId, Double minPrice, Double maxPrice, Pageable pageable) {
-        return productRepository.searchProducts(name, categoryId, minPrice, maxPrice, pageable);
+        //search use Criteria API
+    public Page<ListProductWithCategoryDTO> searchProductsCriteriaApi(String name, Long categoryId, Double minPrice, Double maxPrice, Pageable pageable) {
+        return productRepository.searchProductsCriteriaApi(name, categoryId, minPrice, maxPrice, pageable);
     }
 
     //search use JpaSpecificationExecutor
-    public Page<ListProductWithCategoryDTO> search(String name, Long categoryId, BigDecimal minPrice, BigDecimal maxPrice, Pageable pageable) {
+    public Page<ListProductWithCategoryDTO> searchProductsSpecificationExecutor(String name, Long categoryId, BigDecimal minPrice, BigDecimal maxPrice, Pageable pageable) {
 
-        // 1. Build Specification (no Criteria API manual in your code)
         var spec = ProductSpecification.filter(name, categoryId, minPrice, maxPrice);
 
-        // 2. Query products via JpaSpecificationExecutor
         Page<Product> productPage = productRepository.findAll(spec, pageable);
 
         if (productPage.isEmpty()) {
             return new PageImpl<>(Collections.emptyList(), pageable, 0L);
         }
 
-        // 3. Collect category ids (filter nulls)
         Set<Long> categoryIds = productPage.getContent()
                 .stream()
-                .map(Product::getCategoryId)      // assumes Product.getCategoryId() returns Long
+                .map(Product::getCategoryId)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toSet());
 
-        // 4. Load categories in one query
         final Map<Long, String> finalCategoryMap = categoryIds.isEmpty()
                 ? Collections.emptyMap()
                 : categoryRepository.findAllById(categoryIds)
@@ -120,7 +116,6 @@ public class ProductService {
                 ))
                 .collect(Collectors.toList());
 
-        // 6. Return Page of DTOs (keep totalElements from productPage)
         return new PageImpl<>(dtoList, pageable, productPage.getTotalElements());
     }
 
@@ -146,7 +141,7 @@ public class ProductService {
     }
 
 
-    @Scheduled(fixedRate = 3 * 60 * 1000) // 3 phút = 180.000ms
+    @Scheduled(fixedRate = 3 * 60 * 1000)
     public String reindexAllProducts() throws Exception {
         List<Product> products = productRepository.findAll();
 
@@ -196,7 +191,6 @@ public class ProductService {
                 ProductDocument.class
         );
 
-        // Lấy danh sách hits
         List<ProductDocument> results = response.hits().hits().stream()
                 .map(Hit::source) // mỗi hit lấy ra document
                 .filter(Objects::nonNull)

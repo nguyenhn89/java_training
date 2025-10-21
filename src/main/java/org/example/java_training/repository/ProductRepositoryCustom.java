@@ -14,7 +14,7 @@ public interface ProductRepositoryCustom {
 
     List<ListProductWithCategoryDTO> getProductWithCagtegoryId(Long categoryId);
 
-    Page<ListProductWithCategoryDTO> searchProducts(String name, Long categoryId, Double minPrice, Double maxPrice, Pageable pageable);
+    Page<ListProductWithCategoryDTO> searchProductsCriteriaApi(String name, Long categoryId, Double minPrice, Double maxPrice, Pageable pageable);
 
 //    Page<ListProductWithCategoryDTO> search(String name, Long categoryId, BigDecimal minPrice, BigDecimal maxPrice, Pageable pageable);
 
