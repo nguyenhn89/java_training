@@ -127,9 +127,9 @@ Authorization: Bearer <JWT_TOKEN>
 GET api/products/search-manual?name=product&minPrice=10&maxPrice=500&categoryId=1&page=0&size=5&sort=price,asc
 Authorization: Bearer <JWT_TOKEN>
 9.
--Thống kê số lượng sản phẩm theo danh mục
-GET api/products/count-by-category
-Authorization: Bearer <JWT_TOKEN>
--Lấy danh sách các sản phẩm có giá cao hơn giá trung bình toàn bộ sản phẩm
-GET /api/products/expensive
-Authorization: Bearer <JWT_TOKEN>
+-Thống kê số lượng sản phẩm theo danh mục: 
+GET api/products/count-by-category  
+Authorization: Bearer <JWT_TOKEN>  
+-Lấy danh sách các sản phẩm có giá cao hơn giá trung bình toàn bộ sản phẩm  
+GET /api/products/expensive  
+Authorization: Bearer <JWT_TOKEN>  
