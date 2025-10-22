@@ -45,17 +45,17 @@ public class Product extends  AbstractAuditingEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Tên sản phẩm là bắt buộc")
-    @Size(max = 255, message = "Tên sản phẩm không được vượt quá 255 ký tự")
+    @NotBlank(message = "Product name is required")
+    @Size(max = 255, message = "Product name must not exceed 255 characters")
     @Column(name = "name")
     private String name;
 
-    @NotNull(message = "Giá sản phẩm là bắt buộc")
-    @DecimalMin(value = "0.0", inclusive = false, message = "Giá phải lớn hơn 0")
+    @NotNull(message = "Product price is required")
+    @DecimalMin(value = "0.0", inclusive = false, message = "Price must be greater than 0")
     @Column(name = "price")
     private BigDecimal price;
 
-    @NotNull(message = "Danh mục sản phẩm là bắt buộc")
+    @NotNull(message = "Product category is required")
     @Column(name = "category_id")
     private Long categoryId;
 

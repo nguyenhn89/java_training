@@ -20,7 +20,6 @@ public class JwtUtil {
 	    @Value("${jwt.expiration}")
 	    private long expiration;
 
-		//cân nhắc trước khi dùng key với tự dộng
 //		private static final Key keyBytes = Keys.secretKeyFor(SignatureAlgorithm.HS512);
 
 	    private SecretKey getSigningKey() {

@@ -39,12 +39,13 @@ public class ProductController {
 
     private final ProductService productService;
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @GetMapping("/")
     public ResponseEntity<?> getListProduct(
-    ) {
+            @RequestParam(defaultValue = "1") Integer page,
+            @RequestParam(defaultValue = "10") Integer size) {
         try {
-            List<ListElementProductDTO> productList = productService.getListProduct();
-            return ResponseEntity.ok(new ProductListResponse(productList));
+            ProductListResponse productList = productService.getListProduct(page, size);
+            return ResponseEntity.ok(productList);
         } catch (NotFoundException e) {
             throw new HttpNotFoundException(e.getMessage(), e);
         } catch (BadRequestException e) {
@@ -53,7 +54,7 @@ public class ProductController {
     }
 
 
-    @RequestMapping(value = "/", method = RequestMethod.POST)
+    @PostMapping("/")
     public ResponseEntity<?> createProduct(@Valid @RequestBody ProductCreateRequest product) {
         try {
             Long productId = productService.registerProduct(product);
@@ -67,8 +68,7 @@ public class ProductController {
     }
 
 
-    @RequestMapping(value = "/product_with_category/{categoryId}", method = RequestMethod.GET)
-    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/product_with_category/{categoryId}")
     public ResponseEntity<?> getProductWithCagtegoryId(@PathVariable Long categoryId) {
         try {
             List<ListProductWithCategoryDTO> productWithCagtegoryIdList = productService.getProductWithCagtegoryId(categoryId);
@@ -94,11 +94,7 @@ public class ProductController {
         return ResponseEntity.ok("Delete success");
     }
 
-
-    //http://localhost:8081/api/products/advanced-search?name=product 1 update&minPrice=10&maxPrice=500&categoryId=1&page=0&size=5&sort=price,asc
-
-    /* search pagination sort use Criteria API */
-    @RequestMapping(value = "/search_criteria_api", method = RequestMethod.GET)
+    @GetMapping( "/search_criteria_api")
     public ResponseEntity<Page<ListProductWithCategoryDTO>> search(
             @RequestParam(required = false) String name,
             @RequestParam(required = false) Long categoryId,
@@ -111,7 +107,7 @@ public class ProductController {
     }
 
 
-    @RequestMapping(value = "/search_jpa_specification_executor", method = RequestMethod.GET)
+    @GetMapping("/search_jpa_specification_executor")
     public ResponseEntity<Page<ListProductWithCategoryDTO>> advancedSearch(
             @RequestParam(required = false) String name,
             @RequestParam(required = false) Long categoryId,
@@ -123,7 +119,7 @@ public class ProductController {
         return ResponseEntity.ok(productSearch);
     }
 
-    @RequestMapping(value = "/search-manual", method = RequestMethod.GET)
+    @GetMapping("/search-manual")
     public ResponseEntity<Page<ListProductWithCategoryDTO>> manualSearch(
             @RequestParam(required = false) String name,
             @RequestParam(required = false) Long categoryId,
@@ -133,38 +129,6 @@ public class ProductController {
     ) {
         Page<ListProductWithCategoryDTO> productSearch = productService.searchManual(name, categoryId, minPrice, maxPrice, pageable);
         return ResponseEntity.ok(productSearch);
-    }
-
-    //electicsearch
-    @GetMapping("/elasticsearch")
-    public List<ProductDocument> elasticSearch(@RequestParam String q) throws IOException {
-        return productService.searchAllFields(q);
-    }
-
-    @GetMapping("/elasticsearch_suggest")
-    public List<String> suggestProductNames(String prefix) throws IOException
-    {
-        return productService.suggestProductNames(prefix);
-    }
-    //
-    @GetMapping("/reindex")
-    public ResponseEntity<String> reindex() throws Exception {
-        String message = productService.reindexAllProducts();
-        return ResponseEntity.ok(message);
-    }
-
-    @GetMapping("/elastic/{id}")
-    public ResponseEntity<ProductDocument> getProduct(@PathVariable String id) {
-        try {
-            ProductDocument product = productService.findById(id);
-            if (product != null) {
-                return ResponseEntity.ok(product);
-            } else {
-                return ResponseEntity.notFound().build();
-            }
-        } catch (Exception e) {
-            return ResponseEntity.status(500).build();
-        }
     }
 
     @GetMapping("/count-by-category")

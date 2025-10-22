@@ -20,6 +20,7 @@ import org.example.java_training.dto.ListProductWithCategoryDTO;
 import org.example.java_training.repository.CategoryRepository;
 import org.example.java_training.repository.ProductRepository;
 //import org.example.java_training.responses.ProductSearchRepository;
+import org.example.java_training.responses.ProductListResponse;
 import org.example.java_training.specification.ProductSpecification;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -49,9 +50,9 @@ public class ProductService {
 
     private final ElasticsearchClient client;
 
-    public List<ListElementProductDTO> getListProduct() {
+    public ProductListResponse getListProduct(Integer page, Integer size) {
 
-        return productRepository.getListProduct();
+        return productRepository.getListProduct(page, size);
     }
 
     public Long registerProduct(ProductCreateRequest request) {
@@ -59,7 +60,7 @@ public class ProductService {
         Product product = new Product();
         product.setName(request.getName());
         product.setPrice(request.getPrice());
-        product.setCategoryId(Long.valueOf(request.getCategoryId()));
+        product.setCategoryId(request.getCategoryId());
         product.setContent(request.getContent());
         product.setMemo(request.getMemo());
         Product saved = productRepository.save(product);

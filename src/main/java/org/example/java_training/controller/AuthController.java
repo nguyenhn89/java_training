@@ -63,7 +63,6 @@ public class AuthController extends BaseController {
             ));
         }
 
-        // 3️⃣ Tạo user mới
         User user = new User();
         user.setUserName(request.getUserName());
         user.setPassword(request.getPassword());

@@ -17,20 +17,20 @@ import java.math.BigDecimal;
 @Schema(name = "Product request", description = "product request")
 public class ProductCreateRequest {
 
-    @NotBlank(message = "Tên sản phẩm là bắt buộc")
-    @Size(max = 255, message = "Tên sản phẩm không được vượt quá 255 ký tự")
+    @NotBlank(message = "Product name is required")
+    @Size(max = 255, message = "Product name must not exceed 255 characters")
     private String name;
 
-    @NotNull(message = "Giá sản phẩm là bắt buộc")
-    @DecimalMin(value = "0.0", inclusive = false, message = "Giá phải lớn hơn 0")
+    @NotNull(message = "Product price is required")
+    @DecimalMin(value = "0.0", inclusive = false, message = "Price must be greater than 0")
     private BigDecimal price;
 
-    @NotNull(message = "Danh mục sản phẩm là bắt buộc")
-    private Integer categoryId;
+    @NotNull(message = "Product category is required")
+    private Long categoryId;
 
-    @Size(max = 2000, message = "Nội dung không được quá 2000 ký tự")
+    @Size(max = 2000, message = "Content must not exceed 2000 characters")
     private String content;
 
-    @Size(max = 500, message = "Memo không được quá 500 ký tự")
+    @Size(max = 500, message = "Memo must not exceed 500 characters")
     private String memo;
 }

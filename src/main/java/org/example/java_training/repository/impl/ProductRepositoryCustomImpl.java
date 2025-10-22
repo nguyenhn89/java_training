@@ -8,6 +8,7 @@ import org.example.java_training.dto.ListElementProductDTO;
 import org.example.java_training.dto.ListProductWithCategoryDTO;
 import org.example.java_training.repository.ProductRepositoryCustom;
 import org.example.java_training.repository.RepositoryCustomUtils;
+import org.example.java_training.responses.ProductListResponse;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Sort;
@@ -39,14 +40,34 @@ public class ProductRepositoryCustomImpl extends RepositoryCustomUtils implement
 
 
     @Override
-    public List<ListElementProductDTO> getListProduct() {
-
+    public ProductListResponse getListProduct(Integer page, Integer size) {
         try {
-        String sqlBuilder = "SELECT id, name, price\n" + "FROM product";
+            int pageNum = (page == null || page <= 0) ? 1 : page;
+            int pageSize = (size == null || size <= 0) ? 10 : size;
+            int offset = (pageNum - 1) * pageSize;
 
-        Map<String, Object> parameters = new HashMap<>();
+            String sqlBuilder = """
+            SELECT id, name, price
+            FROM product
+            ORDER BY id DESC
+            LIMIT :limit OFFSET :offset
+            """;
 
-        return this.getResultList(sqlBuilder, "ProductList", parameters, transactionManager);
+            Map<String, Object> parameters = new HashMap<>();
+            parameters.put("limit", pageSize);
+            parameters.put("offset", offset);
+
+            List<ListElementProductDTO> products =
+                    this.getResultList(sqlBuilder, "ProductList", parameters, transactionManager);
+
+            String countSql = "SELECT COUNT(*) AS total FROM product";
+            Map<String, Object> countParams = new HashMap<>();
+            List<Object> countResult = this.getResultList(countSql, null, countParams, transactionManager);
+            long totalItems = ((Number) countResult.get(0)).longValue();
+            int totalPages = (int) Math.ceil((double) totalItems / pageSize);
+
+            return new ProductListResponse(products, totalItems, totalPages, pageNum, pageSize);
+
         } catch (Exception e) {
             transactionManager.rollback(transactionManager.getTransaction(new DefaultTransactionDefinition()));
             throw e;

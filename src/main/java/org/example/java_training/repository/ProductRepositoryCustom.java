@@ -4,6 +4,7 @@ import org.example.java_training.domain.Product;
 import org.example.java_training.dto.CategoryCountDTO;
 import org.example.java_training.dto.ListElementProductDTO;
 import org.example.java_training.dto.ListProductWithCategoryDTO;
+import org.example.java_training.responses.ProductListResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -12,7 +13,7 @@ import java.util.List;
 
 public interface ProductRepositoryCustom {
 
-    List<ListElementProductDTO> getListProduct();
+    ProductListResponse getListProduct(Integer page, Integer size);
 
     List<ListProductWithCategoryDTO> getProductWithCagtegoryId(Long categoryId);
 
