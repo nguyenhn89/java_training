@@ -118,16 +118,18 @@ Content-Type: application/json
 - Tìm kiếm theo tên, danh mục , giá và nhiều điều kiện cùng lúc
 - Hỗ trợ phân trang (pagination) và sắp xếp (sorting).
 
-search use JpaSpecificationExecutor
++ search use JpaSpecificationExecutor
 GET api/products/search_criteria_api?name=product&minPrice=10&maxPrice=500&categoryId=1&page=0&size=5&sort=price,asc
-
-search use Criteria API
++ search use Criteria API
 GET api/products/search_jpa_specification_executor?name=product&minPrice=10&maxPrice=500&categoryId=1&page=0&size=5&sort=price,asc
-Headers:
+Authorization: Bearer <JWT_TOKEN>
++ search use Manual (native query)
+GET api/products/search-manual?name=product&minPrice=10&maxPrice=500&categoryId=1&page=0&size=5&sort=price,asc
 Authorization: Bearer <JWT_TOKEN>
 9.
 -Thống kê số lượng sản phẩm theo danh mục
-api/products/count-by-category
+GET api/products/count-by-category
 Authorization: Bearer <JWT_TOKEN>
 -Lấy danh sách các sản phẩm có giá cao hơn giá trung bình toàn bộ sản phẩm
-/api/products/expensive
+GET /api/products/expensive
+Authorization: Bearer <JWT_TOKEN>
