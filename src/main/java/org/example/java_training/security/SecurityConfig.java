@@ -4,6 +4,7 @@ import org.example.java_training.service.impl.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -18,6 +19,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+@Order(1)
 public class SecurityConfig {
 
 	private final CustomUserDetailsService userDetailsService;
@@ -37,6 +39,8 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         JwtAuthenticationFilter jwtFilter = new JwtAuthenticationFilter(jwtUtil, userDetailsService);
         http
+
+        .securityMatcher("/api/**")
         .csrf(AbstractHttpConfigurer::disable) // Tắt CSRF vì dùng JWT
         .exceptionHandling(ex -> ex
                     .authenticationEntryPoint(customAuthHandler) // Xử lý lỗi 401
@@ -50,7 +54,8 @@ public class SecurityConfig {
                 .requestMatchers("/api/products/**").hasRole("USER")
                 .requestMatchers("/admin/**").hasRole("ADMIN") // chỉ ADMIN được vào
                 .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN") // USER và ADMIN đều được
-                .anyRequest().permitAll()                            // Các route còn lại → cho phép
+//                .anyRequest().permitAll()                            // Các route còn lại → cho phép
+                        .anyRequest().authenticated()
         )
         .sessionManagement(session -> session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Không dùng session

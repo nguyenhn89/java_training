@@ -1,4 +1,4 @@
-package org.example.java_training.controller;
+package org.example.java_training.controller.api;
 
 import org.example.java_training.responses.ApiResponse;
 import org.springframework.http.HttpStatus;

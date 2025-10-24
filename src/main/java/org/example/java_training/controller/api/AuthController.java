@@ -1,4 +1,4 @@
-package org.example.java_training.controller;
+package org.example.java_training.controller.api;
 
 import org.example.java_training.request.AuthRequest;
 import org.example.java_training.domain.User;
@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/auth")
 public class AuthController extends BaseController {
 	
-    private final AuthenticationManager authenticationManager;
+        private final AuthenticationManager authenticationManager;
     private final UserService userService;
     private final JwtUtil jwtUtil;
     
@@ -66,6 +66,7 @@ public class AuthController extends BaseController {
         User user = new User();
         user.setUserName(request.getUserName());
         user.setPassword(request.getPassword());
+        user.setEmail(request.getEmail());
         user.setRole("ROLE_USER");
 
         try {

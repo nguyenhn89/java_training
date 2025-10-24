@@ -32,7 +32,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     FilterChain filterChain)
             throws ServletException, IOException {
 
-    	// Lấy token từ header Authorization
+        //filter muốn xác thực bằng base session web
+        String path = request.getRequestURI();
+        if (!path.startsWith("/api/")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+
+        // Lấy token từ header Authorization
         String token = extractToken(request);
         
         // Kiểm tra token và xác thực
