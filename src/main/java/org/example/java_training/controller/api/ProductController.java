@@ -27,6 +27,7 @@ import org.springframework.data.web.PageableDefault;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -87,8 +88,11 @@ public class ProductController {
     // DELETE product
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") Long id) {
-        productService.deleteProduct(id);
-        return ResponseEntity.ok("Delete success");
+        Long deletedId = productService.deleteProductById(id);
+        return ResponseEntity.ok(Map.of(
+                "message", "Delete success",
+                "productId", deletedId
+        ));
     }
 
     @GetMapping( "/search_criteria_api")
