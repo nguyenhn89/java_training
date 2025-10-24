@@ -56,35 +56,30 @@ public class WebAuthController {
             @Valid @ModelAttribute("register") RegisterDTO registerDTO,
             BindingResult result,
             Model model) {
-        System.out.println("nguyen");
-        System.out.println(0);
-        System.out.println("nguyen1");
 
         if (result.hasErrors()) {
             System.out.println(1);
             return "sign-up";
         }
-        System.out.println("nguye777");
+
         if (!registerDTO.getPassword().equals(registerDTO.getConfirmPassword())) {
             System.out.println(2);
             model.addAttribute("passwordError", "Mật khẩu xác nhận không khớp");
             return "sign-up";
         }
-        System.out.println("nguye88");
+
         if (userService.existsByUserName(registerDTO.getUserName())) {
             System.out.println(3);
             model.addAttribute("usernameError", "Tên đăng nhập đã tồn tại");
             return "sign-up";
         }
-        System.out.println("nguyen999");
+
         try {
-            System.out.println("nguyen22");
             User user = new User();
             user.setUserName(registerDTO.getUserName());
             user.setPassword(registerDTO.getPassword());
             user.setEmail(registerDTO.getEmail());
             userService.save(user);
-            System.out.println("nguyen333");
         } catch (RuntimeException ex) {
             model.addAttribute("usernameError", ex.getMessage());
             System.out.println(ex.getMessage());
