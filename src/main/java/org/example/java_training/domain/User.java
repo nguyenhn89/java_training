@@ -25,6 +25,9 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Column(name = "user_name", nullable = false, unique = true)
     private String userName;
 
+    @Column(name = "email",nullable = false, unique = true)
+    private String email;
+
     @Column(name = "password")
     private String password;
 

@@ -37,13 +37,15 @@ spring:
       enabled: false
 
   thymeleaf:
+    enabled: false
     prefix: classpath:/templates/
     suffix: .html
     cache: false
 
   mvc:
     view:
-      prefix: /
+      prefix: /WEB-INF/views/
+      suffix: .jsp
 
 server:
   port: 8081

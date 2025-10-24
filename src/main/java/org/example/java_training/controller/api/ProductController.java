@@ -1,4 +1,4 @@
-package org.example.java_training.controller;
+package org.example.java_training.controller.api;
 
 
 
@@ -6,7 +6,6 @@ package org.example.java_training.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.java_training.domain.Product;
-import org.example.java_training.domain.ProductDocument;
 import org.example.java_training.dto.CategoryCountDTO;
 import org.example.java_training.dto.ListElementProductDTO;
 import org.example.java_training.dto.ListProductWithCategoryDTO;
@@ -14,7 +13,6 @@ import org.example.java_training.responses.ProductListResponse;
 import org.example.java_training.responses.ProductWithCategoryIdListResponse;
 import org.example.java_training.service.ProductService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.example.java_training.exceptions.NotFoundException;
@@ -27,7 +25,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 

@@ -34,7 +34,8 @@ Body (JSON):
 
 {
 "userName": "test123",
-"password": "123456"
+"password": "123456",
+"email": "nguyen@gmail.com",
 }
 
 2️⃣ Đăng nhập
