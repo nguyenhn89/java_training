@@ -82,6 +82,7 @@ public class WebAuthController {
             userService.save(user);
         } catch (RuntimeException ex) {
             model.addAttribute("usernameError", ex.getMessage());
+            System.out.println(ex.getMessage());
             return "sign-up";
         }
 
