@@ -41,13 +41,13 @@
                             <form th:action="@{/sign-in}" method="post" th:object="${login}" class="text-start">
 
                                 <div class="input-group input-group-outline my-3">
-                                    <label class="form-label">Username</label>
-                                    <input type="text" th:field="*{userName}" class="form-control" required />
+<!--                                    <label class="form-label">Username</label>-->
+                                    <input type="text" th:field="*{userName}" class="form-control" required placeholder="Username"/>
                                 </div>
 
                                 <div class="input-group input-group-outline mb-3">
-                                    <label class="form-label">Password</label>
-                                    <input type="password" th:field="*{password}" class="form-control" required />
+<!--                                    <label class="form-label">Password</label>-->
+                                    <input type="password" th:field="*{password}" class="form-control" required  placeholder="Password"/>
                                 </div>
 
                                 <div class="form-check form-switch d-flex align-items-center mb-3">

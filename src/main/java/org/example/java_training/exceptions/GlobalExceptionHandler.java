@@ -47,7 +47,6 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleValidationError(MethodArgumentNotValidException ex) {
         Map<String, Object> error = new HashMap<>();
 
-        // Lấy thông báo lỗi đầu tiên (bạn có thể gom tất cả nếu muốn)
         String message = ex.getBindingResult().getFieldErrors().stream()
                 .map(fieldError -> fieldError.getDefaultMessage())
                 .findFirst()

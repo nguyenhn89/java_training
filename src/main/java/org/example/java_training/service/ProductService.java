@@ -23,6 +23,7 @@ import org.example.java_training.repository.ProductRepository;
 import org.example.java_training.responses.ProductListResponse;
 import org.example.java_training.specification.ProductSpecification;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.elasticsearch.ResourceNotFoundException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.example.java_training.request.ProductCreateRequest;
@@ -148,11 +149,6 @@ public class ProductService {
         return new PageImpl<>(dtoList, pageable, result.getTotalElements());
     }
 
-    public void deleteProduct(Long id) {
-        productRepository.deleteById(id);
-    }
-
-
     @Scheduled(fixedRate = 3 * 60 * 1000)
     public String reindexAllProducts() throws Exception {
         List<Product> products = productRepository.findAll();
@@ -189,6 +185,13 @@ public class ProductService {
         return response.found() ? response.source() : null;
     }
 
+    public Long deleteProductById(Long id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + id));
+        productRepository.delete(product);
+        return product.getId();
+    }
+
     // Search bằng multi_match
     public List<ProductDocument> searchAllFields(String keyword) throws IOException {
         SearchResponse<ProductDocument> response = client.search(s -> s
@@ -197,14 +200,14 @@ public class ProductService {
                                 .multiMatch(m -> m
                                         .query(keyword)
                                         .fields("name^2", "memo", "content") // name ưu tiên hơn
-                                        .fuzziness("AUTO") // Cho phép sai chính tả nhẹ
+                                        .fuzziness("AUTO")
                                 )
                         ),
                 ProductDocument.class
         );
 
         List<ProductDocument> results = response.hits().hits().stream()
-                .map(Hit::source) // mỗi hit lấy ra document
+                .map(Hit::source)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
 
@@ -221,7 +224,7 @@ public class ProductService {
                                         .value(prefix.toLowerCase())
                                 )
                         )
-                        .size(5), // chỉ lấy top 5 gợi ý
+                        .size(5),
                 ProductDocument.class
         );
 
