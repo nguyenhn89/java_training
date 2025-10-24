@@ -22,6 +22,10 @@ public class UserServiceImpl implements UserService  {
     public User save(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
+        if (user.getRole() == null || user.getRole().isEmpty()) {
+            user.setRole("ROLE"); // role mặc định
+        }
+
         // Nếu role chưa có prefix thì thêm vào
         if (!user.getRole().startsWith("ROLE_")) {
             user.setRole("ROLE_" + user.getRole());
