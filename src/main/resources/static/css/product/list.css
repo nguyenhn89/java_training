@@ -1,0 +1,8 @@
+.pagination .page-link {
+    border-radius: 8px;
+    margin: 0 3px;
+}
+.pagination .active .page-link {
+    background-color: #212529;
+    border-color: #212529;
+}

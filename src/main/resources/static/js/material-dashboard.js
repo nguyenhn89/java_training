@@ -862,3 +862,32 @@ if (indicators) {
 
   sections.forEach(onSectionLeavesViewport);
 }
+
+function sidebarColor(element) {
+    const color = element.getAttribute("data-color");
+    const body = document.body;
+
+    // Xóa class theme cũ
+    body.classList.remove(
+        "theme-primary",
+        "theme-dark",
+        "theme-info",
+        "theme-success",
+        "theme-warning",
+        "theme-danger"
+    );
+
+    // Thêm theme mới
+    body.classList.add("theme-" + color);
+
+    // (Tùy chọn) Lưu lại màu theme
+    localStorage.setItem("themeColor", color);
+}
+
+// Khi load lại trang, khôi phục theme đã chọn
+document.addEventListener("DOMContentLoaded", function () {
+    const savedTheme = localStorage.getItem("themeColor");
+    if (savedTheme) {
+        document.body.classList.add("theme-" + savedTheme);
+    }
+});
