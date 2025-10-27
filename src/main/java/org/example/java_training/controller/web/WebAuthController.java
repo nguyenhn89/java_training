@@ -1,22 +1,18 @@
-package org.example.java_training.controller;
+package org.example.java_training.controller.web;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.example.java_training.domain.User;
 import org.example.java_training.dto.RegisterDTO;
-import org.example.java_training.dto.UserDTO;
 import org.example.java_training.request.AuthRequest;
 import org.example.java_training.security.JwtUtil;
 import org.example.java_training.service.UserService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
-import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -116,25 +112,26 @@ public class WebAuthController {
     public String showDashboard(Model model) {
 
         // Lấy thông tin xác thực hiện tại
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Object principal = authentication.getPrincipal();
-
-        String username = null;
-        String role = null;
-
-        if (principal instanceof UserDetails userDetails) {
-            username = userDetails.getUsername();
-            role = userDetails.getAuthorities().stream()
-                    .map(a -> a.getAuthority())
-                    .findFirst()
-                    .orElse("UNKNOWN");
-        } else {
-            username = principal.toString();
-        }
-
-        model.addAttribute("username", username);
-        System.out.println("username : " + username);
-        model.addAttribute("role", role);
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        Object principal = authentication.getPrincipal();
+//
+//        String username = null;
+//        String role = null;
+//
+//        if (principal instanceof UserDetails userDetails) {
+//            username = userDetails.getUsername();
+//            role = userDetails.getAuthorities().stream()
+//                    .map(a -> a.getAuthority())
+//                    .findFirst()
+//                    .orElse("UNKNOWN");
+//        } else {
+//            username = principal.toString();
+//        }
+//
+//        model.addAttribute("username", username);
+//        System.out.println("username : " + username);
+//        model.addAttribute("role", role);
+        model.addAttribute("currentPageSidebar", "dashboard");
 
         return "dashboard";
     }

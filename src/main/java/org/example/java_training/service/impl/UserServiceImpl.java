@@ -23,7 +23,7 @@ public class UserServiceImpl implements UserService  {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         if (user.getRole() == null || user.getRole().isEmpty()) {
-            user.setRole("ROLE"); // role mặc định
+            user.setRole("ROLE_USER");
         }
 
         // Nếu role chưa có prefix thì thêm vào
