@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/base}">
+
+<head>
+    <title layout:fragment="title">Edit Product</title>
+</head>
+
+<body>
+<section layout:fragment="content">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            <div class="card my-4">
+                <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                    <div class="bg-gradient-dark shadow-dark border-radius-lg pt-4 pb-3 d-flex justify-content-between align-items-center">
+                        <h6 class="text-white text-capitalize ps-3 mb-0">Edit Product</h6>
+                        <a th:href="@{/products}" class="btn btn-light btn-sm me-3">← Back to list</a>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <!-- Success or error message -->
+                    <div th:if="${message}" class="alert alert-success" th:text="${message}"></div>
+                    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+                    <!-- Edit Form -->
+                    <form th:action="@{/products/update}" th:object="${product}" method="post">
+                        <input type="hidden" th:field="*{id}" />
+
+                        <!-- Name -->
+                        <div class="input-group input-group-outline mb-3">
+<!--                            <label class="form-label">Product Name</label>-->
+                            <input  th:field="*{name}" type="text" class="form-control" placeholder="Enter product name"/>
+
+                        </div>
+                        <div class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+
+                        <!-- Price -->
+                        <div class="input-group input-group-outline mb-3">
+<!--                            <label class="form-label">Price</label>-->
+                            <input  th:field="*{price}" type="text" class="form-control" placeholder="Enter Price"/>
+                        </div>
+                        <div class="text-danger" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></div>
+
+
+                        <div class="input-group input-group-outline mb-3">
+<!--                            <span class="input-group-text">Content</span>-->
+                            <textarea th:field="*{content}" class="form-control" rows="5"  aria-label="With textarea"  ></textarea>
+
+                        </div>
+                        <div class="text-danger" th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></div>
+
+                        <div class="d-flex justify-content-end mt-4">
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section layout:fragment="pageScripts">
+    <script th:src="@{/js/product/edit.js}"></script>
+</section>
+</body>
+</html>
