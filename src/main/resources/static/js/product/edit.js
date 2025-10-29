@@ -1,16 +1,13 @@
-function deleteProduct(id) {
-fetch('/products/' + id, {
-    method: 'DELETE'
-})
-    .then(response => {
-        if (response.ok) {
-            location.reload();
-        } else {
-            alert('Delete failed!');
-        }
-    })
-    .catch(err => console.error(err));
-}
+// <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+// $(document).ready(function () {
+//     setTimeout(function () {
+//         $(".alert").fadeOut(500, function () {
+//             $(this).slideUp(300, function () {
+//                 $(this).remove();
+//             });
+//         });
+//     }, 4000);
+// });
 
 window.addEventListener('load', function () {
     setTimeout(function () {

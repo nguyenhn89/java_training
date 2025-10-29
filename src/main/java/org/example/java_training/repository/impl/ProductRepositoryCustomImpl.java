@@ -47,7 +47,7 @@ public class ProductRepositoryCustomImpl extends RepositoryCustomUtils implement
             int offset = (pageNum - 1) * pageSize;
 
             String sqlBuilder = """
-            SELECT id, name, price
+            SELECT id, name, price, content, category_id
             FROM product
             ORDER BY id DESC
             LIMIT :limit OFFSET :offset

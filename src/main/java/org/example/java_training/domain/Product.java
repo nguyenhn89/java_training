@@ -26,6 +26,8 @@ import java.math.BigDecimal;
                 @ColumnResult(name = "id", type = Long.class),
                 @ColumnResult(name = "name", type = String.class),
                 @ColumnResult(name = "price", type = BigDecimal.class),
+                @ColumnResult(name = "content", type = String.class),
+                @ColumnResult(name = "category_id", type = Long.class),
         })
 })
 

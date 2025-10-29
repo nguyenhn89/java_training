@@ -56,6 +56,10 @@ public class ProductService {
         return productRepository.getListProduct(page, size);
     }
 
+    public List<Category> getCategories() {
+        return categoryRepository.findAll();
+    }
+
     public Long registerProduct(ProductCreateRequest request) {
         log.info("Creating product: {}", request);
         Product product = new Product();
@@ -147,6 +151,15 @@ public class ProductService {
                 .toList();
 
         return new PageImpl<>(dtoList, pageable, result.getTotalElements());
+    }
+
+    public ListElementProductDTO findByIdElement(Long id) throws Exception {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new Exception("Product not found with id: " + id));
+
+        // Convert sang DTO
+        return builder.toDto(product, ListElementProductDTO.class)
+                .orElseThrow(() -> new Exception("Failed to map Product to DTO"));
     }
 
     @Scheduled(fixedRate = 3 * 60 * 1000)
