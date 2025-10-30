@@ -25,7 +25,7 @@ public class GuestbookSessionServlet extends HttpServlet {
 
         if (messages == null) {
             messages = new ArrayList<>();
-            session.setAttribute("messages", messages); // khởi tạo mới nếu chưa có
+            session.setAttribute("messages", messages);
         }
 
         req.setAttribute("messages", messages);
