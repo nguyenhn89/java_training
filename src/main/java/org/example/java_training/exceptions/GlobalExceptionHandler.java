@@ -15,7 +15,6 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    // 🔹 Invalid username or password
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<?> handleBadCredentials(BadCredentialsException ex) {
         Map<String, Object> error = new HashMap<>();
@@ -24,7 +23,6 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
     }
 
-    // 🔹 User not found
     @ExceptionHandler(UsernameNotFoundException.class)
     public ResponseEntity<?> handleUserNotFound(UsernameNotFoundException ex) {
         Map<String, Object> error = new HashMap<>();
@@ -33,7 +31,6 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 
-    // 🔹 Account disabled or locked
     @ExceptionHandler(DisabledException.class)
     public ResponseEntity<?> handleDisabledUser(DisabledException ex) {
         Map<String, Object> error = new HashMap<>();
@@ -42,7 +39,6 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
     }
 
-    // ✅ 🔹 Validation errors (from @Valid)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> handleValidationError(MethodArgumentNotValidException ex) {
         Map<String, Object> error = new HashMap<>();
@@ -58,7 +54,6 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
-    // 🔹 Other general exceptions
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handleGeneralError(Exception ex) {
         Map<String, Object> error = new HashMap<>();

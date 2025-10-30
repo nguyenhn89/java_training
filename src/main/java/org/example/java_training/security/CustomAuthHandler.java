@@ -19,14 +19,12 @@ public class CustomAuthHandler implements AuthenticationEntryPoint, AccessDenied
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response,
                          AuthenticationException authException) throws IOException {
-        // Lỗi 401 - chưa đăng nhập hoặc token không hợp lệ
         writeError(response, 401, "Unauthorized", "Token is invalid or expired", request);
     }
 
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response,
                        AccessDeniedException accessDeniedException) throws IOException {
-        // Lỗi 403 - có token nhưng không đủ quyền
         writeError(response, 403, "Forbidden", "You do not have permission to access this resource", request);
     }
 

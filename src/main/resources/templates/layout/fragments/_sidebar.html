@@ -19,7 +19,7 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link text-dark"
-                   th:classappend="${currentPageSidebar == 'products'} ? ' active bg-gradient-dark text-white' : ''"
+                   th:classappend="${currentPageSidebar == 'products' or currentPageSidebar == 'product-edit' or currentPageSidebar == 'product-create'} ? ' active bg-gradient-dark text-white' : ''"
                    th:href="@{/products}">
                     <i class="material-symbols-rounded">list_alt</i>
                     <span class="nav-link-text ms-1">Products</span>
