@@ -43,9 +43,9 @@ public class WebAuthController {
 
     @GetMapping("/sign-up")
     public String showSignUpForm(Model model) {
-        model.addAttribute("register", new RegisterDTO());
-        model.addAttribute("usernameError", null);
-        model.addAttribute("passwordError", null);
+        if (!model.containsAttribute("register")) {
+            model.addAttribute("register", new RegisterDTO());
+        }
         return "sign-up";
     }
 
@@ -54,22 +54,33 @@ public class WebAuthController {
     public String processSignUp(
             @Valid @ModelAttribute("register") RegisterDTO registerDTO,
             BindingResult result,
-            Model model) {
+            RedirectAttributes redirectAttributes) {
 
         if (result.hasErrors()) {
-            System.out.println(1);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.register", result);
+            redirectAttributes.addFlashAttribute("register", registerDTO);
             return "redirect:/sign-up";
         }
 
         if (!registerDTO.getPassword().equals(registerDTO.getConfirmPassword())) {
-            System.out.println(2);
-            model.addAttribute("passwordError", "Confirmation password does not match");
+            // Thêm lỗi thủ công vào BindingResult (để hiển thị ở giao diện)
+            result.rejectValue("confirmPassword", "error.register", "Confirmation password does not match");
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.register", result);
+            redirectAttributes.addFlashAttribute("register", registerDTO);
             return "redirect:/sign-up";
         }
 
         if (userService.existsByUserName(registerDTO.getUserName())) {
-            System.out.println(3);
-            model.addAttribute("usernameError", "The login username already exists.");
+            result.rejectValue("userName", "error.register", "The username already exists.");
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.register", result);
+            redirectAttributes.addFlashAttribute("register", registerDTO);
+            return "redirect:/sign-up";
+        }
+
+        if (userService.existsByEmail(registerDTO.getEmail())) {
+            result.rejectValue("email", "error.register", "The email already exists.");
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.register", result);
+            redirectAttributes.addFlashAttribute("register", registerDTO);
             return "redirect:/sign-up";
         }
 
@@ -80,8 +91,9 @@ public class WebAuthController {
             user.setEmail(registerDTO.getEmail());
             userService.save(user);
         } catch (RuntimeException ex) {
-            model.addAttribute("usernameError", ex.getMessage());
-            System.out.println(ex.getMessage());
+            result.rejectValue("userName", "error.register", ex.getMessage());
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.register", result);
+            redirectAttributes.addFlashAttribute("register", registerDTO);
             return "redirect:/sign-up";
         }
 

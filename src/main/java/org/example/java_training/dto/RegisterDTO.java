@@ -7,18 +7,18 @@ import lombok.Data;
 @Data
 public class RegisterDTO {
 
-    @NotBlank(message = "Tên đăng nhập không được để trống")
+    @NotBlank(message = "Username cannot be empty")
     private String userName;
 
-    @NotBlank(message = "Email không được bỏ trống")
+    @NotBlank(message = "Email cannot be empty")
     private String email;
 
-    @NotBlank(message = "Mật khẩu không được để trống")
-    @Size(min = 6, message = "Mật khẩu phải có ít nhất 6 ký tự")
+    @NotBlank(message = "Password cannot be empty")
+    @Size(min = 6, message = "Password must be at least 6 characters long")
     private String password;
 
-    @NotBlank(message = "Xác nhận mật khẩu không được để trống")
+    @NotBlank(message = "Password confirmation cannot be empty")
     private String confirmPassword;
 
-    private String role = "USER"; // mặc định là USER
+    private String role = "ROLE_USER"; // default is USER
 }

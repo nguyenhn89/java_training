@@ -48,6 +48,7 @@ public class WebProductController {
     public String createProductForm(Model model) {
         model.addAttribute("product", new ListElementProductDTO());
         model.addAttribute("categories", productService.getCategories());
+        System.out.println(productService.getCategories());
         return "products/create";
     }
 
@@ -83,6 +84,7 @@ public class WebProductController {
     @GetMapping("/edit/{id}")
     public String editProductForm(@PathVariable Long id, Model model) throws Exception {
         ListElementProductDTO product = productService.findByIdElement(id);
+        model.addAttribute("categories", productService.getCategories());
         model.addAttribute("product", product);
         return "products/edit";
     }
@@ -93,7 +95,6 @@ public class WebProductController {
             BindingResult bindingResult,
             RedirectAttributes redirectAttributes, Model model) {
             if (bindingResult.hasErrors()) {
-                System.out.println("nguyen afdka dfajk");
                 model.addAttribute("error", "Please correct the errors below!");
                 return "products/edit";
             }

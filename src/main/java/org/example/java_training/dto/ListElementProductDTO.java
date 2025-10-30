@@ -40,7 +40,8 @@ public class ListElementProductDTO implements Serializable {
     @Size(max = 1000, message = "Content must not exceed 1000 characters")
     private String content;
 
-    @Schema(description = "category Id of Product", example = "category Id product")
+    @Schema(description = "Category ID of Product", example = "1")
     @JsonProperty("category_id")
+    @NotNull(message = "Category ID is required")
     private Long categoryId;
 }
