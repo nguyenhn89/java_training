@@ -63,7 +63,6 @@ public class WebAuthController {
         }
 
         if (!registerDTO.getPassword().equals(registerDTO.getConfirmPassword())) {
-            // Thêm lỗi thủ công vào BindingResult (để hiển thị ở giao diện)
             result.rejectValue("confirmPassword", "error.register", "Confirmation password does not match");
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.register", result);
             redirectAttributes.addFlashAttribute("register", registerDTO);

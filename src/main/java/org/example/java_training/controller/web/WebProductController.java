@@ -27,14 +27,12 @@ public class WebProductController {
     @Autowired
     private ProductService productService;
 
-    // Danh sách sản phẩm
     @GetMapping
     public String listProducts(
             @RequestParam(defaultValue = "1") Integer page,
             @RequestParam(defaultValue = "10") Integer size,
             Model model) {
         ProductListResponse productList = productService.getListProduct(page, size);
-
         model.addAttribute("products", productList.getProductsList());
         model.addAttribute("currentPage", productList.getCurrentPage());
         model.addAttribute("totalPages", productList.getTotalPages());
@@ -48,6 +46,7 @@ public class WebProductController {
     public String createProductForm(Model model) {
         model.addAttribute("product", new ListElementProductDTO());
         model.addAttribute("categories", productService.getCategories());
+        model.addAttribute("currentPageSidebar", "product-create");
         System.out.println(productService.getCategories());
         return "products/create";
     }
@@ -86,6 +85,7 @@ public class WebProductController {
         ListElementProductDTO product = productService.findByIdElement(id);
         model.addAttribute("categories", productService.getCategories());
         model.addAttribute("product", product);
+        model.addAttribute("currentPageSidebar", "product-edit");
         return "products/edit";
     }
 
