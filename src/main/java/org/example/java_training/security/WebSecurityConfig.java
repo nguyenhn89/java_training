@@ -4,12 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 
+@EnableMethodSecurity(prePostEnabled = true)
 @Configuration
 @Order(2) // Áp dụng sau API config
 public class WebSecurityConfig {
@@ -30,11 +31,15 @@ public class WebSecurityConfig {
                         .requestMatchers(
                                 "/sign-in", "/sign-up", "/register", "/css/**", "/js/**", "/img/**", "/static/**"
                         ).permitAll()
+                        .requestMatchers("/products/create/**", "/products/edit/**", "/products/update/**", "/products/delete/**")
+                        .hasRole("ADMIN")
+
+                        // Both USER and ADMIN can view list
+                        .requestMatchers("/products/**").hasAnyRole("USER", "ADMIN")
+
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers("/products/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/dashboard").authenticated()
-                        .anyRequest().authenticated()
                 )
 
                 .formLogin(AbstractHttpConfigurer::disable)
