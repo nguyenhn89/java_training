@@ -8,6 +8,7 @@ import org.example.java_training.request.ProductCreateRequest;
 import org.example.java_training.responses.ProductListResponse;
 import org.example.java_training.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +29,7 @@ public class WebProductController {
     private ProductService productService;
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public String listProducts(
             @RequestParam(defaultValue = "1") Integer page,
             @RequestParam(defaultValue = "10") Integer size,
@@ -43,6 +45,7 @@ public class WebProductController {
     }
 
     @GetMapping("/create")
+    @PreAuthorize("hasRole('ADMIN')")
     public String createProductForm(Model model) {
         model.addAttribute("product", new ListElementProductDTO());
         model.addAttribute("categories", productService.getCategories());
@@ -53,6 +56,7 @@ public class WebProductController {
 
 
     @PostMapping("/create")
+    @PreAuthorize("hasRole('ADMIN')")
     public String createProduct(
             @Valid @ModelAttribute("product") ListElementProductDTO productDTO,
             BindingResult bindingResult,
@@ -81,6 +85,7 @@ public class WebProductController {
     }
 
     @GetMapping("/edit/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public String editProductForm(@PathVariable Long id, Model model) throws Exception {
         ListElementProductDTO product = productService.findByIdElement(id);
         model.addAttribute("categories", productService.getCategories());
@@ -90,6 +95,7 @@ public class WebProductController {
     }
 
     @PostMapping("/update")
+    @PreAuthorize("hasRole('ADMIN')")
     public String updateProduct(
             @Valid @ModelAttribute("product") ListElementProductDTO productDTO,
             BindingResult bindingResult,
@@ -117,6 +123,7 @@ public class WebProductController {
 
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public String delete(@PathVariable("id") Long id, RedirectAttributes redirectAttributes,
                          @RequestParam(value = "page", required = false) Integer page,
                          @RequestParam(value = "size", required = false) Integer size

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/extras/spring-security"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/base}">
 
@@ -23,7 +23,7 @@
                 <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                     <div class="bg-gradient-dark shadow-dark border-radius-lg pt-3 pb-3 d-flex justify-content-between align-items-center px-3">
                         <h6 class="text-white text-capitalize mb-0">Product List</h6>
-                        <a th:href="@{/products/create}" class="btn btn-light btn-sm text-dark font-weight-bold d-flex align-items-center mb-0">
+                        <a sec:authorize="hasRole('ADMIN')" th:href="@{/products/create}" class="btn btn-light btn-sm text-dark font-weight-bold d-flex align-items-center mb-0">
                             <i class="material-symbols-rounded me-1">add</i>
                             <span>Add New Product</span>
                         </a>
@@ -37,8 +37,8 @@
                                 <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Product</th>
                                 <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Price</th>
                                 <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status</th>
-                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Edit</th>
-                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Delete</th>
+                                <th sec:authorize="hasRole('ADMIN')" class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Edit</th>
+                                <th sec:authorize="hasRole('ADMIN')" class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Delete</th>
                             </tr>
                             </thead>
 
@@ -65,7 +65,7 @@
                                 <td class="align-middle text-center text-sm">
                                     <span class="badge badge-sm bg-gradient-success">Online</span>
                                 </td>
-                                <td class="align-middle text-center">
+                                <td sec:authorize="hasRole('ADMIN')" class="align-middle text-center">
                                     <a th:href="@{'/products/edit/' + ${p.id}}"
                                        class="text-secondary font-weight-bold text-xs d-flex align-items-center justify-content-center"
                                        data-toggle="tooltip"
@@ -74,7 +74,7 @@
                                         <span>Edit</span>
                                     </a>
                                 </td>
-                                <td class="align-middle text-center">
+                                <td sec:authorize="hasRole('ADMIN')" class="align-middle text-center">
                                     <form th:action="@{'/products/' + ${p.id}}" method="post"
                                           onsubmit="return confirm('Are you sure you want to delete this product?')"
                                           class="text-secondary font-weight-bold text-xs d-flex align-items-center justify-content-center">
