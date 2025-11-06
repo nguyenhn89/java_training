@@ -134,4 +134,13 @@ Authorization: Bearer <JWT_TOKEN>
 
 - Lấy danh sách các sản phẩm có giá cao hơn giá trung bình toàn bộ sản phẩm  
   GET /api/products/expensive  
-  Authorization: Bearer <JWT_TOKEN> 
+  Authorization: Bearer <JWT_TOKEN>
+
+* Phần hiển thị Thymeleaf frontend: https://java-training.onrender.com
+- Đăng ký tài khoản (register) : /register
+- Đăng nhập tài khoản đã đăng ký: /login
+- page dashboard sau khi đăng nhập thành công: /dashboard
+- Xem thông tin danh sách products và pagination : /products (role USER)
+- Tạo sản phẩm products mới : /products/create (role ADMIN)
+- Chỉnh sửa thông tin sản phẩm: products/edit/1 (role ADMIN)
+- Xóa sản phẩm (role ADMIN)
