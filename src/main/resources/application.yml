@@ -4,7 +4,7 @@ spring:
 
   datasource:
     #    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/java_training?useSSL=false&serverTimezone=UTC}
-    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://java_training_xox0_user:gdZu2no1wkGj2qMJPu79AGC7daoMlzjf@dpg-d55l813uibrs7394ejig-a.oregon-postgres.render.com/java_training_xox0}
+    url: ${SPRING_DATASOURCE_URL}
     username: ${SPRING_DATASOURCE_USERNAME:root}
     password: ${SPRING_DATASOURCE_PASSWORD:}
     #    driver-class-name: com.mysql.cj.jdbc.Driver
