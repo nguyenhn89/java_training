@@ -15,6 +15,6 @@ Phần 3:
   - JWT_SECRET:a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6
   - PORT : 5432
   - SPRING_DATASOURCE_PASSWORD: gdZu2no1wkGj2qMJPu79AGC7daoMlzjf
-  - SPRING_DATASOURCE_URL:jdbc:postgresql://java_training_xox0_user:gdZu2no1wkGj2qMJPu79AGC7daoMlzjf@dpg-d55l813uibrs7394ejig-a/java_training_xox0
+  - SPRING_DATASOURCE_URL: jdbc:postgresql://dpg-d55l813uibrs7394ejig-a.oregon-postgres.render.com:5432/java_training_xox0
   - SPRING_DATASOURCE_USERNAME:java_training_xox0_user
 + Lưu thay đổi và deploy save để render tự deploy kiểm tra lại ở log và events menu trái

@@ -162,7 +162,7 @@ public class ProductService {
                 .orElseThrow(() -> new Exception("Failed to map Product to DTO"));
     }
 
-    @Scheduled(fixedRate = 3 * 60 * 1000)
+//    @Scheduled(fixedRate = 3 * 60 * 1000)
     public String reindexAllProducts() throws Exception {
         List<Product> products = productRepository.findAll();
 
